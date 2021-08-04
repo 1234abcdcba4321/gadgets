@@ -1,6 +1,6 @@
 "use strict"
 
-var ITER_CAP = 1000;
+var ITER_CAP = 100000;
 
 function run() {
   const code = document.getElementById("code").value;
