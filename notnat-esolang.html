@@ -37,7 +37,7 @@
   <br>instructions:
   <br>0-F (0x30-0x39, 0x41-0x46): push that value onto the stack
   <br>! (0x21): pop an address from the stack, and push the value at that address onto the stack
-  <br>= (0x3D): pop a value and an address from the stack, and put that value at that address
+  <br>= (0x3D): pop a value then an address from the stack, and put that value at that address
   <br>+ (0x2B): pop two values from the stack push the sum back on
   <br>All others are NOPs. The program halts if and only if all cells after the instruction pointer are 0. (You cannot see the output unless it halts.)
   <br><br>

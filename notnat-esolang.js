@@ -1,5 +1,7 @@
 "use strict"
 
+ITER_CAP = 1000;
+
 function run() {
   const code = document.getElementById("code").value;
   let mem = [];
@@ -23,8 +25,6 @@ function run() {
     } else mem.push(code.charCodeAt(i));
   }
   while (mem.length < 16) mem.push(0);
-
-  console.log(mem);
 
   const inp = document.getElementById("io").value;
   let io = [];
@@ -77,7 +77,7 @@ function run() {
 
   console.log(mem);
   let j=0;
-  while (mem[1] < mem.length && j++<100) {
+  while (mem[1] < mem.length) {
     const instr = u0(mem[mem[1]]);
     //console.log(j,instr,mem[12],mem);
     if (instr >= 48 && instr < 58) pushStack(instr-48);     //0-9
@@ -92,7 +92,11 @@ function run() {
       mem[12] += a;
     }
     mem[1]++;
-    if (j==99) console.log("j cap reached")
+    if (j++>ITER_CAP) {
+      console.log(mem);
+      document.getElementById("io").value = "Program ran for pretty long; did you hit an infloop? Raise this limit by changing ITER_CAP in the console.";
+      return;
+    }
   }
 
   while (io.length>0 && (io[io.length-1] === 0 || io[io.length-1] === undefined)) io.pop();
