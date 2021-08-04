@@ -1,1 +1,48 @@
-test
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Notnat Esolang Interpreter</title>
+  <meta name="description" content="An esoteric programming language by Zygan#0404.">
+  <script src="notnat-esolang.js"></script>
+</head>
+<body>
+  Esolang specification including implementation-specific details:<br>
+  The full program is loaded as char codes into memory. All values past the program's end are 0.<br>
+  Special parsing:<br>
+  \1B parses as 27 (0x1B), {4589} becomes 4589 (also supports {0x11ED})<br>
+  And \\ for \ (0x5C) and \{ for { (0x7B). Using these symbols as a literal without escaping can cause issues.<br>
+  This page runs on UTF-8 and uses the native JavaScript String.fromCharCode(...args) and String.prototype.charCodeAt() methods for all string conversions.
+  <br><br>
+  The first 16 cells of memory are special:
+  <br>0: a normal cell, only special because it's easily accessible
+  <br>1: program counter
+  <br>2: I/O index
+  <br>3: I/O data, read/write io memory according to cell 2 (initial value of this var is ignored)
+  <br>the input is placed in a separate section of memory, which will be changed in-place to the output by changing cells 2-3
+  <br>all NUL (0) characters at the end of the output are stripped at the end of the program. unset spots are also treated as NUL.
+  <br>4: operator 1
+  <br>5: operator 2
+  <br>6: read only, 1 if op1 = op2, 0 otherwise
+  <br>7: read only, 1 if op1 > op2, 0 otherwise
+  <br>8: read only, abs(op1 - op2)
+  <br>9: read only, op1 * op2
+  <br>A: read only, trunc(op1 / op2)
+  <br>B: read only, op1 % op2
+  <br>C-F: the stack, only four cells long
+  <br>pushing to the stack shifts CDE to the right and puts the new value in cell C, the value from cell F is lost
+  <br>popping from the stack takes from cell C, shifts DEF to the left, and sets F to 0
+  <br>
+  <br>each cycle, a value is read from memory, according to the program counter (cell 1). that instruction is executed, then program counter is incremented by 1
+  <br>instructions:
+  <br>0-F (0x30-0x39, 0x41-0x46): push that value onto the stack
+  <br>! (0x21): pop an address from the stack, and push the value at that address onto the stack
+  <br>= (0x3D): pop a value and an address from the stack, and put that value at that address
+  <br>+ (0x2B): pop two values from the stack push the sum back on
+  <br>All others are NOPs. The program halts if and only if all cells after the instruction pointer are 0. (You cannot see the output unless it halts.)
+  <br><br>
+  <textarea id="code" rows="12" style="width:90%">Code goes here.</textarea><br>
+  <label>I/O:</label><br>
+  <input type="text" id="io" style="width:90%"><br>
+  <button onclick="run()">Run code</button>
+</body>
