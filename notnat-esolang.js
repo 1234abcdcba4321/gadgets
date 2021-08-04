@@ -86,7 +86,7 @@ function run() {
     else if (instr == 61) {     //=
       const v = popStack();
       const s = popStack();
-      setMem(v,s);
+      setMem(s,v);
     } else if (instr == 43) {   //+
       const a = popStack();
       mem[12] += a;
